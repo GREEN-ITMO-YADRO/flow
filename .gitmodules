@@ -4,3 +4,6 @@
 [submodule "circt"]
 	path = circt
 	url = git@github.com:GREEN-ITMO-YADRO/circt.git
+[submodule "risc-v"]
+	path = risc-v
+	url = git@github.com:GREEN-ITMO-YADRO/risc-v.git
