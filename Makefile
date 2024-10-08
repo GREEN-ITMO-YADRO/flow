@@ -43,20 +43,20 @@ sv-to-mlirs: $(OBJS)
 #===-------------------------------------
 
 test-asm-to-bin: $(BUILD_DIR)/$(TEST_MOD).s 
-	$(CC) -o adder.o $^ 
+	$(CC) -o $(TEST_MOD).o $^ 
 
 test-ll-to-asm: $(BUILD_DIR)/$(TEST_MOD).ll 
-	$(LLC) $(LLC_FLAGS) $< > $(BUILD_DIR)/adder.s 
+	$(LLC) $(LLC_FLAGS) $< > $(BUILD_DIR)/$(TEST_MOD).s 
 
 test-mlirs-to-ll: $(BUILD_DIR)/$(TEST_MOD).mlir 
-	$(ARCILATOR) $< > $(BUILD_DIR)/adder.ll 
+	$(ARCILATOR) $< > $(BUILD_DIR)/$(TEST_MOD).ll 
 
 test-mlirs-opt: $(BUILD_DIR)/$(TEST_MOD).mlir
-	mv $(BUILD_DIR)/adder.mlir $(BUILD_DIR)/adder_pre.mlir 
-	$(CIRCT_OPT) $(BUILD_DIR)/adder_pre.mlir > $(BUILD_DIR)/adder.mlir 
+	mv $(BUILD_DIR)/$(TEST_MOD).mlir $(BUILD_DIR)/$(TEST_MOD)_pre.mlir 
+	$(CIRCT_OPT) $(BUILD_DIR)/$(TEST_MOD)_pre.mlir > $(BUILD_DIR)/$(TEST_MOD).mlir 
 
 test-sv-to-mlirs: $(RISC_V_DIR)/core/$(TEST_MOD).sv 
-	$(CIRCT_VRG) $< > $(BUILD_DIR)/adder.mlir 
+	$(CIRCT_VRG) $< > $(BUILD_DIR)/$(TEST_MOD).mlir 
 
 #===-------------------------------------
 # Convenience 
