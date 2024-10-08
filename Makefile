@@ -42,19 +42,20 @@ sv-to-mlirs: $(OBJS)
 # Test flow on single file
 #===-------------------------------------
 
-test-asm-to-bin: $(TEST_MOD).s 
+test-asm-to-bin: $(BUILD_DIR)/$(TEST_MOD).s 
 	$(CC) -o adder.o $^ 
 
-test-ll-to-asm: $(TEST_MOD).ll 
+test-ll-to-asm: $(BUILD_DIR)/$(TEST_MOD).ll 
 	$(LLC) $(LLC_FLAGS) $< > $(BUILD_DIR)/adder.s 
 
-test-mlirs-to-ll: $(TEST_MOD)_opt.mlir 
+test-mlirs-to-ll: $(BUILD_DIR)/$(TEST_MOD).mlir 
 	$(ARCILATOR) $< > $(BUILD_DIR)/adder.ll 
 
-test-mlirs-opt: $(TEST_MOD).mlir 
-	$(CIRCT_OPT) $< > $(BUILD_DIR)/adder_opt.mlir 
+test-mlirs-opt: $(BUILD_DIR)/$(TEST_MOD).mlir
+	mv $(BUILD_DIR)/adder.mlir $(BUILD_DIR)/adder_pre.mlir 
+	$(CIRCT_OPT) $(BUILD_DIR)/adder_pre.mlir > $(BUILD_DIR)/adder.mlir 
 
-test-sv-to-mlirs: $(TEST_MOD).sv 
+test-sv-to-mlirs: $(RISC_V_DIR)/core/$(TEST_MOD).sv 
 	$(CIRCT_VRG) $< > $(BUILD_DIR)/adder.mlir 
 
 #===-------------------------------------
